@@ -1,38 +1,38 @@
 <p align="center">
   <strong style="font-size:32px;"><u>REGISTRO DE AFILIACIÓN “ASOLIFA.CSS”</u></strong><br/>
-  <span style="font-size:18px;">Corporación Nacional de Defensores de la Democracia</span>
 </p>
 
----
-
 > **Indicaciones**  
-> Complete los campos en letra imprenta legible. Marque con **X** las opciones que correspondan.  
+> Complete los campos en letra imprenta legible.  
+> Marque con **X** las opciones que correspondan.  
 
 ## 1) DATOS PERSONALES
 
 **1. Apellidos y Nombres:**  
 ______________________________________________________________________________  
-______________________________________________________________________________
+______________________________________________________________________________  
 
-**2. DNI:** _________________________    **3. Libreta militar:** _________________________
+**2. DNI:** _________________________  
+**3. Libreta militar:** _________________________  
 
-**4. Fecha de nacimiento (DD/MM/AAAA):** _________________________    **5. Edad:** __________
+**4. Fecha de nacimiento (DD/MM/AAAA):** _________________________  
+**5. Edad:** __________  
 
 **6. Correo electrónico:**  
-______________________________________________________________________________
+______________________________________________________________________________  
 
-**7. Teléfono:** _____________________________
+**7. Teléfono:** _____________________________  
 
 **8. Dirección:**  
 ______________________________________________________________________________  
-______________________________________________________________________________
+______________________________________________________________________________  
 
 **9. Departamento / Provincia / Distrito:**  
-______________________________________________________________________________
+______________________________________________________________________________  
 
 **10. Contacto de emergencia (Nombre y teléfono):**  
 ______________________________________________________________________________  
-______________________________________________________________________________
+______________________________________________________________________________  
 
 <div style="page-break-after: always;"></div>
 
@@ -42,85 +42,109 @@ ______________________________________________________________________________
 - [ ] Primaria  
 - [ ] Secundaria  
 - [ ] Técnico  
-- [ ] Profesional
+- [ ] Profesional  
 
 **12. Arma:**  
 - [ ] MGP  
 - [ ] EP  
 - [ ] FAP  
-- [ ] PNP
+- [ ] PNP  
 
 **13. Último grado obtenido en las FFAA/PNP:**  
 ______________________________________________________________________________  
-______________________________________________________________________________
+______________________________________________________________________________  
 
 **14. Profesión / Oficio (Abogado, albañil, médico, electricista):**  
-______________________________________________________________________________
+______________________________________________________________________________  
 
 **15. Centro de labores:**  
 - [ ] Dependiente  
-- [ ] Independiente
-
-<div style="page-break-after: always;"></div>
+- [ ] Independiente  
 
 ## 3) INFORMACIÓN DE SALUD
 
 **16. Usa prótesis:**  
 - [ ] Sí  
-- [ ] No
+- [ ] No  
+
+<div style="page-break-after: always;"></div>
 
 **17. Enfermedades (marque las que correspondan):**  
 - [ ] Diabetes  
 - [ ] Asma  
 - [ ] Presión  
 - [ ] Ninguna  
-**Otras:** ____________________________________________________________________
+
+**Otras:**  
+______________________________________________________________________________  
 
 **18. Intervenciones quirúrgicas:**  
 - [ ] Sí  
 - [ ] No  
+
 **Detallar si marcó “Sí”:**  
 ______________________________________________________________________________  
-______________________________________________________________________________
+______________________________________________________________________________  
 
 **19. Cuenta con seguro de salud:**  
-______________________________________________________________________________
-
-<div style="page-break-after: always;"></div>
+______________________________________________________________________________  
 
 ## 4) DECLARACIONES Y COMPROMISOS
 
-**20.** ACEPTO QUE LA INFORMACIÓN DETALLADA QUE HE DESCRITO EN EL PRESENTE FORMULARIO ES VERDADERA Y DE INCURRIR EN FALSEDAD ASUMO LAS RESPONSABILIDADES TANTO CIVILES, COMO PENALES ANTE LA AUTORIDAD COMPETENTE.  
-- [ ] ACEPTO  
-- [ ] NO ACEPTO
+**20.**  
+ACEPTO QUE LA INFORMACIÓN DETALLADA QUE HE DESCRITO EN EL PRESENTE FORMULARIO ES VERDADERA  
+Y DE INCURRIR EN FALSEDAD ASUMO LAS RESPONSABILIDADES TANTO CIVILES, COMO PENALES  
+ANTE LA AUTORIDAD COMPETENTE.  
 
-**21.** EN EL CASO DE PERTENECER A OTRA ASOCIACIÓN, DECLARO MI COMPROMISO DE PRESENTAR CARTA DE RENUNCIA A ESTA Y ENTREGAR CARTA DE LA MISMA A “ASOLIFA.CSS”.  
 - [ ] ACEPTO  
-- [ ] NO ACEPTO
+- [ ] NO ACEPTO  
 
-**22.** ME COMPROMETO A CUMPLIR CON EL REGLAMENTO Y ESTATUTOS DE “ASOLIFA”, DESDE EL MOMENTO DE LA SUSCRIPCIÓN DEL PRESENTE FORMULARIO.  
+**21.**  
+EN EL CASO DE PERTENECER A OTRA ASOCIACIÓN, DECLARO MI COMPROMISO DE PRESENTAR CARTA DE RENUNCIA A ESTA  
+Y ENTREGAR CARTA DE LA MISMA A “ASOLIFA.CSS”.  
+
+- [ ] ACEPTO  
+- [ ] NO ACEPTO  
+
+<div style="page-break-after: always;"></div>
+
+**22.**  
+ME COMPROMETO A CUMPLIR CON EL REGLAMENTO Y ESTATUTOS DE “ASOLIFA”,  
+DESDE EL MOMENTO DE LA SUSCRIPCIÓN DEL PRESENTE FORMULARIO.  
+
 - [ ] DE ACUERDO  
-- [ ] NO ESTOY DE ACUERDO
+- [ ] NO ESTOY DE ACUERDO  
 
-**23.** ACEPTO QUE “ASOLIFA.CSS” TENDRÁ, DE ACUERDO A SU ESTATUTO Y REGLAMENTO, ARRAIGO NACIONAL Y QUE SERÁ REPRESENTADA EN CADA REGIÓN POR CADA HOMBRE QUE ACEPTE PERTENECER EN ELLA.  
-- [ ] ACEPTO  
-- [ ] NO ACEPTO
 
-**24.** ME COMPROMETO A REMITIR TODA DOCUMENTACIÓN QUE REFUERZA LO DETALLADO EN EL PRESENTE FORMULARIO Y EN CUANTO SEA SOLICITADO POR ASOLIFA.CSS.  
-- [ ] ACEPTO  
-- [ ] NO ACEPTO
+**23.**  
+ACEPTO QUE “ASOLIFA.CSS” TENDRÁ, DE ACUERDO A SU ESTATUTO Y REGLAMENTO, ARRAIGO NACIONAL  
+Y QUE SERÁ REPRESENTADA EN CADA REGIÓN POR CADA HOMBRE QUE ACEPTE PERTENECER EN ELLA.  
 
-**25.** DECLARO BAJO JURAMENTO Y EN HONOR A LA VERDAD, QUE LOS DATOS CONSIGNADOS EN LA PRESENTE FICHA SON FIDEDIGNOS. POR MEDIO DE ESTE FORMULARIO SOLICITO LA INSCRIPCIÓN EN FORMA LIBRE Y VOLUNTARIA SIN COACCIONES, PRESIONES, NI AMENAZAS DE NINGUNA ÍNDOLE; Y ME SOMETO AL ESTATUTO Y DEMÁS NORMAS INTERNAS DE “ASOLIFA.CSS”.  
 - [ ] ACEPTO  
-- [ ] NO ACEPTO
+- [ ] NO ACEPTO  
+
+**24.**  
+ME COMPROMETO A REMITIR TODA DOCUMENTACIÓN QUE REFUERZA LO DETALLADO EN EL PRESENTE FORMULARIO  
+Y EN CUANTO SEA SOLICITADO POR ASOLIFA.CSS.  
+
+- [ ] ACEPTO  
+- [ ] NO ACEPTO  
+
+**25.**  
+DECLARO BAJO JURAMENTO Y EN HONOR A LA VERDAD, QUE LOS DATOS CONSIGNADOS EN LA PRESENTE FICHA SON FIDEDIGNOS.  
+POR MEDIO DE ESTE FORMULARIO SOLICITO LA INSCRIPCIÓN EN FORMA LIBRE Y VOLUNTARIA SIN COACCIONES, PRESIONES,  
+NI AMENAZAS DE NINGUNA ÍNDOLE; Y ME SOMETO AL ESTATUTO Y DEMÁS NORMAS INTERNAS DE “ASOLIFA.CSS”.  
+
+- [ ] ACEPTO  
+- [ ] NO ACEPTO  
 
 ## 5) DOCUMENTOS REQUERIDOS
 
-Adjuntar en PDF o imagen (JPG/PNG):
+Adjuntar en PDF o imagen (JPG/PNG):  
 - Libreta militar  
 - Constancia de baja  
 - Resolución de reconocimiento del Comando Conjunto  
-- Otros documentos que acrediten haber pertenecido a las FFAA/PNP
+- Otros documentos que acrediten haber pertenecido a las FFAA/PNP  
 
 
 **Firma:** ________________________________    **DNI:** ________________________________  

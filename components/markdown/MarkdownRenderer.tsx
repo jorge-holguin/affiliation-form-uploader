@@ -36,7 +36,6 @@ export default function MarkdownRenderer({ source, filePath, hideHeader = false 
           // Remove the header if hideHeader is true
           if (hideHeader) {
             const contentLines = content.split('\n');
-            // Remove the first few lines containing the header
             const filteredContent = contentLines
               .filter(line => !line.includes('REGISTRO DE AFILIACIÓN') && !line.includes('ASOLIFA.CSS'))
               .join('\n');
@@ -62,10 +61,22 @@ export default function MarkdownRenderer({ source, filePath, hideHeader = false 
           max-width: 100%;
           width: 100%;
           box-sizing: border-box;
-          overflow-wrap: break-word;
-          word-break: break-word;
           background-color: white;
           border-radius: 8px;
+
+          /* 👇 FIX para evitar desbordes */
+          white-space: pre-wrap;
+          word-wrap: break-word;
+          overflow-wrap: break-word;
+        }
+
+        .markdown-content p,
+        .markdown-content li,
+        .markdown-content blockquote {
+          max-width: 95ch;             /* ancho legible */
+          white-space: pre-wrap;
+          word-break: break-word;
+          overflow-wrap: break-word;
         }
 
         .markdown-content pre {
@@ -161,10 +172,6 @@ export default function MarkdownRenderer({ source, filePath, hideHeader = false 
           padding-left: 0.75rem;
         }
         
-        .markdown-content p {
-          margin: 1rem 0;
-        }
-        
         .markdown-content ul, .markdown-content ol {
           padding-left: 1.5rem;
           margin: 1rem 0;
@@ -188,75 +195,7 @@ export default function MarkdownRenderer({ source, filePath, hideHeader = false 
           vertical-align: middle;
           accent-color: #3b82f6;
         }
-        
-        /* Style for paragraphs and form fields */
-        .markdown-content p {
-          margin-bottom: 1.2rem;
-          position: relative;
-          border-bottom: 1px solid transparent;
-        }
-        
-        /* Style for empty paragraphs (form fields) */
-        .markdown-content p:empty {
-          height: 1px;
-          border-bottom: 1px dotted #aaa;
-          margin: 16px 0;
-        }
-        
-        /* Style for consecutive empty paragraphs */
-        .markdown-content p:empty + p:empty {
-          height: 1px;
-          border-bottom: 1px dotted #aaa;
-          margin: 16px 0;
-        }
-        
-        /* Style for paragraphs with underscores (form fields) */
-        .markdown-content p:not(:first-child):not(:last-child) {
-          padding-bottom: 8px;
-        }
-        
-        /* Style for form fields with underscores - using a more compatible approach */
-        .markdown-content p {
-          position: relative;
-        }
-        
-        /* Enhance form field appearance */
-        .markdown-content p em {
-          border-bottom: 1px solid #ddd;
-          padding-bottom: 2px;
-          font-style: normal;
-          color: #555;
-        }
-        
-        /* Form field styling - usando clases más generales */
-        .markdown-content p strong {
-          display: inline-block;
-          margin-top: 1rem;
-        }
-        
-        /* Estilo para campos con etiquetas */
-        .markdown-content p strong + br {
-          display: block;
-          margin-bottom: 0.5rem;
-        }
-        
-        /* Improve spacing for form fields */
-        .markdown-content p + p {
-          margin-top: 0.2rem;
-        }
-        
-        /* Style for form field lines - usando un enfoque más general ya que :contains no es estándar */
-        .markdown-content p {
-          position: relative;
-        }
-        
-        /* Mejorar la visualización de líneas de formulario */
-        .markdown-content p em,
-        .markdown-content p strong {
-          display: inline-block;
-          margin: 0 4px;
-        }
-        
+
         /* Estilo para barras de desplazamiento */
         .markdown-content::-webkit-scrollbar {
           width: 8px;
