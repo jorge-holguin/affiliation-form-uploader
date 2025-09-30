@@ -126,11 +126,20 @@ export default function HomePage() {
               <Shield className="w-8 h-8 text-accent-foreground" />
             </div>
             <div>
-              <h1 className="text-3xl md:text-4xl font-bold text-balance">
-                Corporación Nacional de Defensores de la Democracia
+              {/* Acrónimo como nombre corto principal */}
+              <h1 className="text-3xl md:text-5xl font-extrabold tracking-tight">
+                ALMIP
               </h1>
-              <p className="text-lg text-primary-foreground/80 mt-2">
-                Comprometidos con la defensa de los valores democráticos
+
+              {/* Nombre completo como subtítulo */}
+              <p className="mt-2 text-base md:text-lg font-medium leading-snug text-primary-foreground/90 max-w-2xl">
+                Asociación Nacional de Licenciados de las Fuerzas Armadas y Policías 
+                que Defendieron la Democracia
+              </p>
+
+              {/* Lema o tagline */}
+              <p className="text-sm md:text-base text-primary-foreground/70 mt-2 italic">
+                Honrando a quienes lucharon por la paz y la democracia en el Perú
               </p>
             </div>
           </div>
@@ -140,10 +149,12 @@ export default function HomePage() {
       <main className="max-w-4xl mx-auto px-4 py-12 space-y-12">
         {/* Mission Statement */}
         <section className="text-center space-y-4">
-          <h2 className="text-2xl font-bold text-foreground">Únete a Nuestra Misión Democrática</h2>
+          <h2 className="text-2xl font-bold text-foreground">Únete a Nuestra Hermandad</h2>
           <p className="text-muted-foreground max-w-2xl mx-auto text-lg leading-relaxed">
-            Trabajamos incansablemente para fortalecer las instituciones democráticas, promover la transparencia y
-            defender los derechos fundamentales de todos los ciudadanos.
+            ALMIP agrupa a los licenciados de las Fuerzas Armadas y de la Policía Nacional 
+            que defendieron la democracia entre 1980 y 1997. Nuestra misión es preservar 
+            la memoria, velar por los derechos de nuestros integrantes y contribuir a un Perú 
+            más justo y seguro.
           </p>
         </section>
 
@@ -152,11 +163,11 @@ export default function HomePage() {
           <Card className="text-center">
             <CardHeader>
               <Users className="w-12 h-12 text-accent mx-auto mb-2" />
-              <CardTitle>Participación Ciudadana</CardTitle>
+              <CardTitle>Unidad y Hermandad</CardTitle>
             </CardHeader>
             <CardContent>
               <p className="text-muted-foreground">
-                Fomentamos la participación activa de los ciudadanos en los procesos democráticos
+                Fortalecemos los lazos entre licenciados y sus familias, promoviendo la solidaridad y el respeto mutuo.
               </p>
             </CardContent>
           </Card>
@@ -164,11 +175,11 @@ export default function HomePage() {
           <Card className="text-center">
             <CardHeader>
               <Shield className="w-12 h-12 text-accent mx-auto mb-2" />
-              <CardTitle>Defensa Institucional</CardTitle>
+              <CardTitle>Defensa del Legado</CardTitle>
             </CardHeader>
             <CardContent>
               <p className="text-muted-foreground">
-                Protegemos y fortalecemos las instituciones democráticas fundamentales
+                Custodiamos el honor de quienes sirvieron a la Patria y defendieron la democracia en tiempos difíciles.
               </p>
             </CardContent>
           </Card>
@@ -176,11 +187,11 @@ export default function HomePage() {
           <Card className="text-center">
             <CardHeader>
               <FileText className="w-12 h-12 text-accent mx-auto mb-2" />
-              <CardTitle>Transparencia</CardTitle>
+              <CardTitle>Derechos y Reconocimiento</CardTitle>
             </CardHeader>
             <CardContent>
               <p className="text-muted-foreground">
-                Promovemos la transparencia y la rendición de cuentas en todos los niveles
+                Impulsamos iniciativas para el reconocimiento social, histórico y legal de nuestros miembros.
               </p>
             </CardContent>
           </Card>
@@ -195,7 +206,7 @@ export default function HomePage() {
                 Descarga tu Ficha de Afiliación
               </CardTitle>
               <CardDescription className="text-lg">
-                Únete a nuestra organización y forma parte del cambio democrático
+                Forma parte de ALMIP y únete al reconocimiento de los hombres y mujeres que defendieron la democracia
               </CardDescription>
             </CardHeader>
             <CardContent className="text-center space-y-4">
@@ -262,7 +273,7 @@ export default function HomePage() {
                 Envía tu Ficha Firmada
               </CardTitle>
               <CardDescription className="text-lg">
-                Completa el proceso de afiliación subiendo tu documento firmado
+                Con tu afiliación reafirmas tu compromiso con ALMIP y con la defensa de la democracia
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -270,12 +281,10 @@ export default function HomePage() {
                 <div className="py-8 space-y-4 text-center">
                   <CheckCircle className="w-16 h-16 text-success mx-auto" />
                   <h3 className="text-xl font-semibold text-success mt-4">¡Tu ficha ha sido recibida correctamente!</h3>
-                  <p className="text-muted-foreground">Gracias por afiliarte. Nos pondremos en contacto contigo pronto.</p>
+                  <p className="text-muted-foreground">Gracias por afiliarte a ALMIP. Nos pondremos en contacto contigo pronto.</p>
 
                   {uploadResult?.link && (
-                    <div className="mt-4">
-                  
-                    </div>
+                    <div className="mt-4"></div>
                   )}
 
                   {uploadResult?.recentUploads && uploadResult.recentUploads.length > 0 && (
@@ -370,8 +379,12 @@ export default function HomePage() {
         {/* Footer */}
         <footer className="text-center py-8 border-t border-border">
           <div className="space-y-2">
-            <p className="text-muted-foreground">© 2025 Corporación Nacional de Defensores de la Democracia</p>
-            <p className="text-sm text-muted-foreground">Comprometidos con la transparencia, la justicia y los valores democráticos</p>
+            <p className="text-muted-foreground">
+              © 2025 ALMIP – Asociación Nacional de Licenciados de las Fuerzas Armadas y Policías que Defendieron la Democracia
+            </p>
+            <p className="text-sm text-muted-foreground">
+              Honrando a los héroes de 1980 – 1997. Unidad, memoria y democracia.
+            </p>
           </div>
         </footer>
       </main>
