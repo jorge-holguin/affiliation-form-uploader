@@ -7,9 +7,9 @@ import { Suspense } from "react"
 import "./globals.css"
 
 export const metadata: Metadata = {
-  title: "Corporación Nacional de Defensores de la Democracia",
-  description: "Organización dedicada a la defensa y promoción de los valores democráticos",
-  generator: "v0.app",
+  title: "RENMIP - Red Nacional de Técnicos, Sub Oficiales y Licenciados Militares y de Policías",
+  description: "Red Nacional de Técnicos, Sub Oficiales y Licenciados Militares y de Policías que defendieron la Democracia entre 1980 - 1997",
+  generator: "Jorge",
 }
 
 export default function RootLayout({

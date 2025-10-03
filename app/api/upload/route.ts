@@ -35,18 +35,26 @@ function sanitize(input: string, allowAtDot = false): string {
   return allowAtDot ? base.replace(/[^a-zA-Z0-9_@.]/g, '') : base.replace(/[^a-zA-Z0-9_]/g, '');
 }
 
-// Parsear form-data
+// Parsear form-data con múltiples archivos
 async function parseFormData(req: NextRequest) {
   const formData = await req.formData();
   const nombreCompleto = formData.get('nombreCompleto') as string;
   const dni = formData.get('dni') as string;
   const correo = formData.get('correo') as string;
-  const archivo = formData.get('archivo') as File;
+  const totalArchivos = parseInt(formData.get('totalArchivos') as string || '0');
+  
+  const archivos: File[] = [];
+  for (let i = 0; i < totalArchivos; i++) {
+    const archivo = formData.get(`archivo${i}`) as File;
+    if (archivo) {
+      archivos.push(archivo);
+    }
+  }
 
-  if (!nombreCompleto || !dni || !correo || !archivo) {
+  if (!nombreCompleto || !dni || !correo || archivos.length === 0) {
     throw new Error('Faltan campos requeridos');
   }
-  return { nombreCompleto, dni, correo, archivo };
+  return { nombreCompleto, dni, correo, archivos };
 }
 
 // Guardar temporal y copia local
@@ -114,64 +122,107 @@ export async function POST(req: NextRequest) {
       throw new Error('Falta DROPBOX_ACCESS_TOKEN en .env');
     }
 
-    const { nombreCompleto, dni, correo, archivo } = await parseFormData(req);
+    const { nombreCompleto, dni, correo, archivos } = await parseFormData(req);
 
-    const allowed = ['application/pdf', 'image/jpeg', 'image/jpg', 'image/png'];
-    if (!allowed.includes(archivo.type)) {
+    // Validar número de archivos
+    if (archivos.length > 10) {
       return NextResponse.json(
-        { success: false, message: 'Tipo de archivo no permitido', recentUploads: uploadTracker.getRecentUploads(clientIp) },
+        { success: false, message: 'Máximo 10 archivos permitidos', recentUploads: uploadTracker.getRecentUploads(clientIp) },
         { status: 400 }
       );
+    }
+
+    const allowed = ['application/pdf', 'image/jpeg', 'image/jpg', 'image/png'];
+    const maxSize = 5 * 1024 * 1024; // 5MB
+    
+    // Validar cada archivo
+    for (const archivo of archivos) {
+      if (!allowed.includes(archivo.type)) {
+        return NextResponse.json(
+          { success: false, message: `Tipo de archivo no permitido: ${archivo.name}`, recentUploads: uploadTracker.getRecentUploads(clientIp) },
+          { status: 400 }
+        );
+      }
+      if (archivo.size > maxSize) {
+        return NextResponse.json(
+          { success: false, message: `Archivo ${archivo.name} excede el tamaño máximo de 5MB`, recentUploads: uploadTracker.getRecentUploads(clientIp) },
+          { status: 400 }
+        );
+      }
     }
 
     const sanitizedName = sanitize(nombreCompleto);
     const sanitizedDni = sanitize(dni);
     const sanitizedCorreo = sanitize(correo, true);
-    const ext = getExtension(archivo.name);
-    const formattedFileName = `${sanitizedName}_${sanitizedDni}_${sanitizedCorreo}${ext}`;
-
-    const saved = await saveFileToDisk(archivo, formattedFileName);
-    tempFilePath = saved.tempPath;
 
     const dbx = new Dropbox({
       accessToken: process.env.DROPBOX_ACCESS_TOKEN,
       fetch: fetch,
     });
 
-    // Subir archivo
-    const buffer = await fsPromises.readFile(tempFilePath);
-    const fullDropboxPath = `${DROPBOX_FOLDER}/${formattedFileName}`.replace(/\/+/g, '/');
+    const uploadedFiles: Array<{ fileName: string; fileId: string; link: string | null }> = [];
+    const tempFiles: string[] = [];
 
-    console.log('📤 Subiendo a Dropbox en ruta:', fullDropboxPath);
+    // Subir cada archivo
+    for (let i = 0; i < archivos.length; i++) {
+      const archivo = archivos[i];
+      const ext = getExtension(archivo.name);
+      const formattedFileName = archivos.length === 1
+        ? `${sanitizedName}_${sanitizedDni}_${sanitizedCorreo}${ext}`
+        : `${sanitizedName}_${sanitizedDni}_${sanitizedCorreo}_${i + 1}${ext}`;
 
-    const uploadResponse: DropboxResponse<files.FileMetadata> = await dbx.filesUpload({
-      path: fullDropboxPath,
-      contents: buffer,
-      mode: { '.tag': 'add' },
-      autorename: true,
-      mute: false,
-    });
+      const saved = await saveFileToDisk(archivo, formattedFileName);
+      tempFiles.push(saved.tempPath);
 
-    const uploadedMeta = uploadResponse.result;
-    const finalPathLower = uploadedMeta.path_lower!;
-    const fileId = uploadedMeta.id;
+      // Subir a Dropbox
+      const buffer = await fsPromises.readFile(saved.tempPath);
+      const fullDropboxPath = `${DROPBOX_FOLDER}/${formattedFileName}`.replace(/\/+/g, '/');
 
-    // Link compartido
-    let link: string | null = null;
-    try {
-      link = await getOrCreateSharedLink(dbx, finalPathLower);
-    } catch (linkError) {
-      console.error('❌ Error generando link compartido:', JSON.stringify(linkError, null, 2));
+      console.log(`📤 Subiendo archivo ${i + 1}/${archivos.length} a Dropbox:`, fullDropboxPath);
+
+      const uploadResponse: DropboxResponse<files.FileMetadata> = await dbx.filesUpload({
+        path: fullDropboxPath,
+        contents: buffer,
+        mode: { '.tag': 'add' },
+        autorename: true,
+        mute: false,
+      });
+
+      const uploadedMeta = uploadResponse.result;
+      const finalPathLower = uploadedMeta.path_lower!;
+      const fileId = uploadedMeta.id;
+
+      // Link compartido
+      let link: string | null = null;
+      try {
+        link = await getOrCreateSharedLink(dbx, finalPathLower);
+      } catch (linkError) {
+        console.error('❌ Error generando link compartido:', JSON.stringify(linkError, null, 2));
+      }
+
+      uploadedFiles.push({
+        fileName: path.basename(finalPathLower),
+        fileId: link || fileId,
+        link,
+      });
     }
 
-    uploadTracker.addUpload(clientIp, link || fileId, path.basename(finalPathLower), 'success');
+    // Limpiar archivos temporales
+    for (const tempFile of tempFiles) {
+      try {
+        await fsPromises.unlink(tempFile);
+      } catch (e) {
+        console.error('Error eliminando archivo temporal:', e);
+      }
+    }
+
+    uploadTracker.addUpload(clientIp, uploadedFiles[0].fileId, uploadedFiles.map(f => f.fileName).join(', '), 'success');
 
     return NextResponse.json({
       success: true,
-      message: 'Archivo subido exitosamente a Dropbox',
-      fileId: link || fileId,
-      link,
-      localPath: saved.localPath ? path.basename(saved.localPath) : undefined,
+      message: `${archivos.length} archivo(s) subido(s) exitosamente a Dropbox`,
+      files: uploadedFiles,
+      totalFiles: archivos.length,
       localStoragePath: LOCAL_STORAGE_PATH,
       recentUploads: uploadTracker.getRecentUploads(clientIp),
     });
