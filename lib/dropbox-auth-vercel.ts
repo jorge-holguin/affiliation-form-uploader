@@ -16,10 +16,17 @@ let cachedTokens: TokenData | null = null;
  * Refresca el access token usando el refresh token
  */
 async function refreshAccessToken(refreshToken: string): Promise<TokenData> {
-  const clientId = process.env.DROPBOX_CLIENT_ID!;
-  const clientSecret = process.env.DROPBOX_CLIENT_SECRET!;
+  const clientId = process.env.DROPBOX_CLIENT_ID?.trim();
+  const clientSecret = process.env.DROPBOX_CLIENT_SECRET?.trim();
+  const cleanRefreshToken = refreshToken.trim();
+
+  if (!clientId || !clientSecret) {
+    throw new Error('DROPBOX_CLIENT_ID y DROPBOX_CLIENT_SECRET son requeridos para refresh tokens');
+  }
 
   console.log('🔄 Refrescando access token de Dropbox...');
+  console.log('📋 Client ID:', clientId);
+  console.log('📋 Refresh Token (primeros 20 chars):', cleanRefreshToken.substring(0, 20) + '...');
 
   const response = await fetch('https://api.dropboxapi.com/oauth2/token', {
     method: 'POST',
@@ -28,7 +35,7 @@ async function refreshAccessToken(refreshToken: string): Promise<TokenData> {
     },
     body: new URLSearchParams({
       grant_type: 'refresh_token',
-      refresh_token: refreshToken,
+      refresh_token: cleanRefreshToken,
       client_id: clientId,
       client_secret: clientSecret,
     }),
@@ -36,6 +43,7 @@ async function refreshAccessToken(refreshToken: string): Promise<TokenData> {
 
   if (!response.ok) {
     const errorText = await response.text();
+    console.error('❌ Error refrescando token:', errorText);
     throw new Error(`Failed to refresh token: ${response.status} ${errorText}`);
   }
 
@@ -61,15 +69,16 @@ async function refreshAccessToken(refreshToken: string): Promise<TokenData> {
  * Obtiene un access token válido, refrescándolo si es necesario
  */
 export async function getValidAccessToken(): Promise<string> {
-  const refreshToken = process.env.DROPBOX_REFRESH_TOKEN;
+  const refreshToken = process.env.DROPBOX_REFRESH_TOKEN?.trim();
+  const accessToken = process.env.DROPBOX_ACCESS_TOKEN?.trim();
 
+  // Si no hay refresh token, usar access token directo
   if (!refreshToken) {
-    // Modo legacy: usar access token directo
-    const accessToken = process.env.DROPBOX_ACCESS_TOKEN;
     if (!accessToken) {
-      throw new Error('No se encontró DROPBOX_ACCESS_TOKEN ni DROPBOX_REFRESH_TOKEN');
+      throw new Error('No se encontró DROPBOX_ACCESS_TOKEN ni DROPBOX_REFRESH_TOKEN en las variables de entorno');
     }
     console.warn('⚠️ Usando access token sin refresh. Esto expirará en 4 horas.');
+    console.warn('💡 Configura DROPBOX_REFRESH_TOKEN para renovación automática');
     return accessToken;
   }
 
@@ -80,11 +89,24 @@ export async function getValidAccessToken(): Promise<string> {
       console.log('✅ Usando token en cache (válido)');
       return cachedTokens.access_token;
     }
+    console.log('⏰ Token en cache expirado, refrescando...');
   }
 
-  // Refrescar token
-  const tokens = await refreshAccessToken(refreshToken);
-  return tokens.access_token;
+  // Intentar refrescar token
+  try {
+    const tokens = await refreshAccessToken(refreshToken);
+    return tokens.access_token;
+  } catch (error: any) {
+    console.error('❌ Error al refrescar token:', error.message);
+    
+    // Fallback: usar access token directo si existe
+    if (accessToken) {
+      console.warn('⚠️ Usando DROPBOX_ACCESS_TOKEN como fallback');
+      return accessToken;
+    }
+    
+    throw error;
+  }
 }
 
 /**
