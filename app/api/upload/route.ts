@@ -6,7 +6,7 @@ import * as path from 'path';
 import * as os from 'os';
 import { promises as fsPromises } from 'fs';
 import { uploadTracker } from '@/lib/upload-tracker';
-import { createDropboxClient } from '@/lib/dropbox-auth';
+import { createDropboxClient } from '@/lib/dropbox-auth-vercel';
 
 // ====== CONFIG ======
 const LOCAL_STORAGE_PATH = 'C:\\Users\\Jorge-Chosica\\Documents\\PDFS';
