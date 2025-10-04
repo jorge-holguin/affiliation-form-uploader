@@ -6,6 +6,7 @@ import * as path from 'path';
 import * as os from 'os';
 import { promises as fsPromises } from 'fs';
 import { uploadTracker } from '@/lib/upload-tracker';
+import { createDropboxClient } from '@/lib/dropbox-auth';
 
 // ====== CONFIG ======
 const LOCAL_STORAGE_PATH = 'C:\\Users\\Jorge-Chosica\\Documents\\PDFS';
@@ -118,10 +119,6 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    if (!process.env.DROPBOX_ACCESS_TOKEN) {
-      throw new Error('Falta DROPBOX_ACCESS_TOKEN en .env');
-    }
-
     const { nombreCompleto, dni, correo, archivos } = await parseFormData(req);
 
     // Validar número de archivos
@@ -155,10 +152,8 @@ export async function POST(req: NextRequest) {
     const sanitizedDni = sanitize(dni);
     const sanitizedCorreo = sanitize(correo, true);
 
-    const dbx = new Dropbox({
-      accessToken: process.env.DROPBOX_ACCESS_TOKEN,
-      fetch: fetch,
-    });
+    // Crear cliente Dropbox con token auto-renovable
+    const dbx = await createDropboxClient();
 
     const uploadedFiles: Array<{ fileName: string; fileId: string; link: string | null }> = [];
     const tempFiles: string[] = [];
