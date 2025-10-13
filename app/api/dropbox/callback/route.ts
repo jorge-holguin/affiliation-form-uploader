@@ -1,15 +1,14 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { promises as fs } from 'fs';
-import path from 'path';
 import type { TokenExchangeResponse, DropboxTokens } from '@/lib/types/dropbox';
 import { DROPBOX_OAUTH_CONSTANTS } from '@/lib/types/dropbox';
+import { saveTokens } from '@/lib/refreshDropboxToken';
 
 /**
  * GET /api/dropbox/callback
  * 
  * Maneja el callback de OAuth2 de Dropbox.
  * Recibe el código de autorización y lo intercambia por access_token y refresh_token.
- * Guarda los tokens en tokens.json para uso futuro.
+ * Guarda los tokens en Supabase para uso futuro.
  */
 export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams;
@@ -83,11 +82,10 @@ export async function GET(request: NextRequest) {
       expires_at: new Date(Date.now() + tokenData.expires_in * 1000).toISOString(),
     };
 
-    // Guardar tokens en archivo JSON
-    const tokensPath = path.join(process.cwd(), 'tokens.json');
-    await fs.writeFile(tokensPath, JSON.stringify(tokens, null, 2), 'utf-8');
+    // Guardar tokens en Supabase
+    await saveTokens(tokens);
 
-    console.log('✅ Tokens saved successfully to tokens.json');
+    console.log('✅ Tokens saved successfully to Supabase');
 
     // Retornar respuesta exitosa (sin exponer los tokens completos)
     return NextResponse.json({
