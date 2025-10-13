@@ -34,11 +34,26 @@ export async function GET(request: NextRequest) {
 
   const clientId = process.env.DROPBOX_CLIENT_ID;
   const clientSecret = process.env.DROPBOX_CLIENT_SECRET;
-  const redirectUri = process.env.DROPBOX_REDIRECT_URI;
+  let redirectUri = process.env.DROPBOX_REDIRECT_URI;
 
-  if (!clientId || !clientSecret || !redirectUri) {
+  // Si no hay redirect URI en .env, construirlo dinámicamente
+  if (!redirectUri) {
+    const host = request.headers.get('host') || 'localhost:3000';
+    const protocol = host.includes('localhost') ? 'http' : 'https';
+    redirectUri = `${protocol}://${host}/oauth/callback`;
+  }
+
+  if (!clientId || !clientSecret) {
     return NextResponse.json(
-      { error: 'Missing Dropbox credentials in environment variables' },
+      { 
+        error: 'Missing Dropbox credentials in environment variables',
+        debug: {
+          clientId: clientId ? 'present' : 'missing',
+          clientSecret: clientSecret ? 'present' : 'missing',
+          redirectUri: redirectUri,
+          env: process.env.NODE_ENV,
+        }
+      },
       { status: 500 }
     );
   }
