@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 import { DROPBOX_OAUTH_CONSTANTS } from '@/lib/types/dropbox';
 
 /**
@@ -7,27 +7,13 @@ import { DROPBOX_OAUTH_CONSTANTS } from '@/lib/types/dropbox';
  * Inicia el flujo OAuth2 de Dropbox redirigiendo al usuario a la página de autorización.
  * Usa token_access_type=offline para obtener refresh tokens.
  */
-export async function GET(request: NextRequest) {
+export async function GET() {
   const clientId = process.env.DROPBOX_CLIENT_ID;
-  let redirectUri = process.env.DROPBOX_REDIRECT_URI;
+  const redirectUri = process.env.DROPBOX_REDIRECT_URI;
 
-  // Si no hay redirect URI en .env, construirlo dinámicamente
-  if (!redirectUri) {
-    const host = request.headers.get('host') || 'localhost:3000';
-    const protocol = host.includes('localhost') ? 'http' : 'https';
-    redirectUri = `${protocol}://${host}/oauth/callback`;
-  }
-
-  if (!clientId) {
+  if (!clientId || !redirectUri) {
     return NextResponse.json(
-      { 
-        error: 'Missing DROPBOX_CLIENT_ID in environment variables',
-        debug: {
-          clientId: clientId ? 'present' : 'missing',
-          redirectUri: redirectUri,
-          env: process.env.NODE_ENV,
-        }
-      },
+      { error: 'Missing DROPBOX_CLIENT_ID or DROPBOX_REDIRECT_URI in environment variables' },
       { status: 500 }
     );
   }
