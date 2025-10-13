@@ -1,32 +1,108 @@
-import { promises as fs } from 'fs';
-import path from 'path';
 import type { DropboxTokens, RefreshTokenResponse } from './types/dropbox';
 import { DROPBOX_OAUTH_CONSTANTS } from './types/dropbox';
+import { supabase } from './supabase';
+import type { DropboxTokenInsert, DropboxTokenUpdate } from './supabase';
+
+const APP_NAME = 'PDF_Defensor_Democracia';
 
 /**
- * Lee los tokens desde tokens.json
+ * Lee los tokens desde Supabase
  */
 export async function readTokens(): Promise<DropboxTokens | null> {
   try {
-    const tokensPath = path.join(process.cwd(), 'tokens.json');
-    const tokensData = await fs.readFile(tokensPath, 'utf-8');
-    return JSON.parse(tokensData) as DropboxTokens;
+    const { data, error } = await supabase
+      .from('dropbox_tokens')
+      .select('*')
+      .eq('app_name', APP_NAME)
+      .order('created_at', { ascending: false })
+      .limit(1)
+      .single();
+
+    if (error) {
+      console.error('Error reading tokens from Supabase:', error);
+      return null;
+    }
+
+    if (!data) {
+      console.log('No tokens found in Supabase');
+      return null;
+    }
+
+    // Convertir de formato Supabase a DropboxTokens
+    const tokens: DropboxTokens = {
+      access_token: data.access_token,
+      refresh_token: data.refresh_token,
+      expires_in: data.expires_in,
+      token_type: data.token_type,
+      scope: data.scope,
+      account_id: data.account_id,
+      uid: data.uid,
+      obtained_at: data.obtained_at,
+      expires_at: data.expires_at,
+    };
+
+    return tokens;
   } catch (error) {
-    console.error('Error reading tokens.json:', error);
+    console.error('Error reading tokens from Supabase:', error);
     return null;
   }
 }
 
 /**
- * Guarda los tokens actualizados en tokens.json
+ * Guarda los tokens en Supabase
  */
 export async function saveTokens(tokens: DropboxTokens): Promise<void> {
   try {
-    const tokensPath = path.join(process.cwd(), 'tokens.json');
-    await fs.writeFile(tokensPath, JSON.stringify(tokens, null, 2), 'utf-8');
-    console.log('✅ Tokens updated in tokens.json');
+    // Primero, verificar si ya existe un registro
+    const { data: existing } = await supabase
+      .from('dropbox_tokens')
+      .select('id')
+      .eq('app_name', APP_NAME)
+      .order('created_at', { ascending: false })
+      .limit(1)
+      .single();
+
+    const tokenData: DropboxTokenInsert = {
+      app_name: APP_NAME,
+      access_token: tokens.access_token,
+      refresh_token: tokens.refresh_token,
+      expires_in: tokens.expires_in,
+      token_type: tokens.token_type,
+      scope: tokens.scope,
+      account_id: tokens.account_id,
+      uid: tokens.uid || null,
+      obtained_at: tokens.obtained_at,
+      expires_at: tokens.expires_at,
+    };
+
+    if (existing) {
+      // Actualizar registro existente
+      const { error } = await supabase
+        .from('dropbox_tokens')
+        .update(tokenData)
+        .eq('id', existing.id);
+
+      if (error) {
+        console.error('Error updating tokens in Supabase:', error);
+        throw error;
+      }
+
+      console.log('✅ Tokens updated in Supabase');
+    } else {
+      // Insertar nuevo registro
+      const { error } = await supabase
+        .from('dropbox_tokens')
+        .insert(tokenData);
+
+      if (error) {
+        console.error('Error inserting tokens in Supabase:', error);
+        throw error;
+      }
+
+      console.log('✅ Tokens saved to Supabase');
+    }
   } catch (error) {
-    console.error('Error saving tokens.json:', error);
+    console.error('Error saving tokens to Supabase:', error);
     throw error;
   }
 }

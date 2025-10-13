@@ -22,7 +22,7 @@ export interface DropboxTokens {
   scope: string;
   
   /** ID de la cuenta de Dropbox */
-  account_id?: string;
+  account_id: string;
   
   /** ID de usuario (legacy) */
   uid?: string;
