@@ -8,6 +8,7 @@
     "lint": "next lint",
     "start": "next start",
     "test:dropbox": "tsx scripts/test-dropbox-auth.ts",
+    "test:oauth": "tsx scripts/test-oauth-flow.ts",
     "show:env": "node scripts/show-env-vars.js",
     "refresh-token": "node scripts/get-refresh-token.js"
   },
