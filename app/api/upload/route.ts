@@ -6,7 +6,7 @@ import * as path from 'path';
 import * as os from 'os';
 import { promises as fsPromises } from 'fs';
 import { uploadTracker } from '@/lib/upload-tracker';
-import { createDropboxClient } from '@/lib/dropbox-auth-vercel';
+import { getDropboxClient } from '@/lib/dropboxClient';
 
 // ====== CONFIG ======
 const LOCAL_STORAGE_PATH = 'C:\\Users\\Jorge-Chosica\\Documents\\PDFS';
@@ -152,8 +152,8 @@ export async function POST(req: NextRequest) {
     const sanitizedDni = sanitize(dni);
     const sanitizedCorreo = sanitize(correo, true);
 
-    // Crear cliente Dropbox con token auto-renovable
-    const dbx = await createDropboxClient();
+    // Crear cliente Dropbox con token auto-renovable desde Supabase
+    const dbx = await getDropboxClient();
 
     const uploadedFiles: Array<{ fileName: string; fileId: string; link: string | null }> = [];
     const tempFiles: string[] = [];
